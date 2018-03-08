@@ -48,6 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) TOCropViewCroppingStyle croppingStyle;
 
 /**
+ The rotation style of the crop view (eg, fixed or relative)
+ */
+@property (nonatomic, assign, readonly) TOCropViewRotationStyle rotationStyle;
+
+/**
  A grid view overlaid on top of the foreground image view's container.
  */
 @property (nonnull, nonatomic, strong, readonly) TOCropOverlayView *gridOverlayView;
@@ -178,6 +183,11 @@ The minimum croping aspect ratio. If set, user is prevented from setting croppin
  Create a new instance of the crop view with the specified image and cropping
  */
 - (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image;
+
+/**
+ Create a new instance of the crop view with the specified image, cropping, and rotation
+ */
+- (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)cropStyle rotationStyle:(TOCropViewRotationStyle)rotationStyle image:(nonnull UIImage *)image;
 
 /**
  Performs the initial set up, including laying out the image and applying any restore properties.

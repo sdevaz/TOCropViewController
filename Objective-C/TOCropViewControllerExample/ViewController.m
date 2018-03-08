@@ -15,6 +15,7 @@
 @property (nonatomic, strong) UIImageView *imageView;   // The image view to present the cropped image
 
 @property (nonatomic, assign) TOCropViewCroppingStyle croppingStyle; //The cropping style
+@property (nonatomic, assign) TOCropViewRotationStyle rotationStyle; //The rotation style
 @property (nonatomic, assign) CGRect croppedFrame;
 @property (nonatomic, assign) NSInteger angle;
 
@@ -31,7 +32,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info
 {
     UIImage *image = info[UIImagePickerControllerOriginalImage];
-    TOCropViewController *cropController = [[TOCropViewController alloc] initWithCroppingStyle:self.croppingStyle image:image];
+    TOCropViewController *cropController = [[TOCropViewController alloc] initWithCroppingStyle:self.croppingStyle rotationStyle:self.rotationStyle image:image];
     cropController.delegate = self;
 
     // Uncomment this if you wish to provide extra instructions via a title label
@@ -178,6 +179,8 @@
                                            handler:^(UIAlertAction *action) {
                                                self.croppingStyle = TOCropViewCroppingStyleDefault;
                                                
+                                               self.rotationStyle = TOCropViewRotationStyleFixed;
+                                               
                                                UIImagePickerController *standardPicker = [[UIImagePickerController alloc] init];
                                                standardPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
                                                standardPicker.allowsEditing = NO;
@@ -190,6 +193,8 @@
                                          handler:^(UIAlertAction *action) {
                                              self.croppingStyle = TOCropViewCroppingStyleCircular;
                                              
+                                             self.rotationStyle = TOCropViewRotationStyleRelative;
+
                                              UIImagePickerController *profilePicker = [[UIImagePickerController alloc] init];
                                              profilePicker.modalPresentationStyle = UIModalPresentationPopover;
                                              profilePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;

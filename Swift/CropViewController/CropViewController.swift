@@ -35,6 +35,11 @@ public typealias CropViewControllerToolbarPosition = TOCropViewControllerToolbar
  */
 public typealias CropViewCroppingStyle = TOCropViewCroppingStyle
 
+/**
+ The type of rotation style for this view controller (ie fixed or relative)
+ */
+public typealias CropViewRotationStyle = TOCropViewRotationStyle
+
 ///------------------------------------------------
 /// @name Delegate
 ///------------------------------------------------
@@ -145,6 +150,13 @@ open class CropViewController: UIViewController, TOCropViewControllerDelegate {
      */
     public var croppingStyle: CropViewCroppingStyle {
         return toCropViewController.croppingStyle
+    }
+    
+    /**
+     The cropping style of this particular crop view controller
+     */
+    public var rotationStyle: CropViewRotationStyle {
+        return toCropViewController.rotationStyle
     }
     
     /**
@@ -427,6 +439,19 @@ open class CropViewController: UIViewController, TOCropViewControllerDelegate {
      */
     public init(croppingStyle: CropViewCroppingStyle, image: UIImage) {
         self.toCropViewController = TOCropViewController(croppingStyle: croppingStyle, image: image)
+        super.init(nibName: nil, bundle: nil)
+        setUpCropController()
+    }
+    
+    /**
+     Creates a new instance of a crop view controller with the supplied image, cropping style, and rotation style
+     
+     @param croppingStyle The cropping style that will be used with this view controller (eg, rectangular, or circular)
+     @param rotationStyle The rotation style that will be used with this view controller (eg, fixed, or relative)
+     @param image The image that will be cropped
+     */
+    public init(croppingStyle: CropViewCroppingStyle, rotationStyle: CropViewRotationStyle, image: UIImage) {
+        self.toCropViewController = TOCropViewController(croppingStyle: croppingStyle, rotationStyle:rotationStyle, image: image)
         super.init(nibName: nil, bundle: nil)
         setUpCropController()
     }

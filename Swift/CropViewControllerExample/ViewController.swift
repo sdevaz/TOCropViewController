@@ -14,14 +14,15 @@ class ViewController: UIViewController, CropViewControllerDelegate, UIImagePicke
     
     private var image: UIImage?
     private var croppingStyle = CropViewCroppingStyle.default
-    
+    private var rotationStyle = CropViewRotationStyle.fixed
+
     private var croppedRect = CGRect.zero
     private var croppedAngle = 0
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let image = (info[UIImagePickerController.InfoKey.originalImage] as? UIImage) else { return }
         
-        let cropController = CropViewController(croppingStyle: croppingStyle, image: image)
+        let cropController = CropViewController(croppingStyle: croppingStyle, rotationStyle: rotationStyle, image: image)
         cropController.delegate = self
         
         // Uncomment this if you wish to provide extra instructions via a title label

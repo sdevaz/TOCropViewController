@@ -31,6 +31,14 @@ typedef NS_ENUM(NSInteger, TOCropViewCroppingStyle) {
 };
 
 /**
+ Fixed or relative cropping rectangle rotation
+ */
+typedef NS_ENUM(NSInteger, TOCropViewRotationStyle) {
+    TOCropViewRotationStyleRelative,     // rotate with image
+    TOCropViewRotationStyleFixed     // The crop rectangle will not rotate with image
+};
+
+/**
  Preset values of the most common aspect ratios that can be used to quickly configure
  the crop view controller.
  */

@@ -134,6 +134,11 @@
 @property (nonatomic, readonly) TOCropViewCroppingStyle croppingStyle;
 
 /**
+ The rotation style of this particular crop view controller
+ */
+@property (nonatomic, readonly) TOCropViewRotationStyle rotationStyle;
+
+/**
  A choice from one of the pre-defined aspect ratio presets
  */
 @property (nonatomic, assign) TOCropViewControllerAspectRatioPreset aspectRatioPreset;
@@ -298,6 +303,15 @@
  @param image The image that will be cropped
  */
 - (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(nonnull UIImage *)image NS_SWIFT_NAME(init(croppingStyle:image:));
+
+/**
+ Creates a new instance of a crop view controller with the supplied image, cropping style, and rotation style
+ 
+ @param style The cropping style that will be used with this view controller (eg, rectangular, or circular)
+ @param style The rotation style that will be used with this view controller (eg, fixed, or relative)
+ @param image The image that will be cropped
+ */
+- (nonnull instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)cropStyle rotationStyle:(TOCropViewRotationStyle)rotationStyle image:(nonnull UIImage *)image NS_SWIFT_NAME(init(croppingStyle:rotationStyle:image:));
 
 /**
  Resets object of TOCropViewController class as if user pressed reset button in the bottom bar themself

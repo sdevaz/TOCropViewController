@@ -52,6 +52,7 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 
 @property (nonatomic, strong, readwrite) UIImage *image;
 @property (nonatomic, assign, readwrite) TOCropViewCroppingStyle croppingStyle;
+@property (nonatomic, assign, readwrite) TOCropViewRotationStyle rotationStyle;
 
 /* Views */
 @property (nonatomic, strong) UIImageView *backgroundImageView;     /* The main image view, placed within the scroll view */
@@ -122,9 +123,17 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
 
 - (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)style image:(UIImage *)image
 {
+    return [self initWithCroppingStyle:TOCropViewCroppingStyleDefault rotationStyle:TOCropViewRotationStyleRelative image:image];
+
+    return self;
+}
+
+- (instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)cropStyle rotationStyle:(TOCropViewRotationStyle)rotationStyle image:(UIImage *)image
+{
     if (self = [super init]) {
         _image = image;
-        _croppingStyle = style;
+        _croppingStyle = cropStyle;
+        _rotationStyle = rotationStyle;
         [self setup];
     }
     
@@ -1590,23 +1599,26 @@ typedef NS_ENUM(NSInteger, TOCropViewOverlayEdge) {
     //Flip the content size of the scroll view to match the rotated bounds
     self.scrollView.contentSize = self.backgroundContainerView.frame.size;
     
-    //assign the new crop box frame and re-adjust the content to fill it
-    self.cropBoxFrame = newCropFrame;
-    [self moveCroppedContentToCenterAnimated:NO];
-    newCropFrame = self.cropBoxFrame;
     
-    //work out how to line up out point of interest into the middle of the crop box
-    cropTargetPoint.x *= scale;
-    cropTargetPoint.y *= scale;
-    
-    //swap the target dimensions to match a 90 degree rotation (clockwise or counterclockwise)
-    CGFloat swap = cropTargetPoint.x;
-    if (clockwise) {
-        cropTargetPoint.x = self.scrollView.contentSize.width - cropTargetPoint.y;
-        cropTargetPoint.y = swap;
-    } else {
-        cropTargetPoint.x = cropTargetPoint.y;
-        cropTargetPoint.y = self.scrollView.contentSize.height - swap;
+    if (self.rotationStyle == TOCropViewRotationStyleRelative) {
+        //assign the new crop box frame and re-adjust the content to fill it
+        self.cropBoxFrame = newCropFrame;
+        [self moveCroppedContentToCenterAnimated:NO];
+        newCropFrame = self.cropBoxFrame;
+        
+        //work out how to line up out point of interest into the middle of the crop box
+        cropTargetPoint.x *= scale;
+        cropTargetPoint.y *= scale;
+        
+        //swap the target dimensions to match a 90 degree rotation (clockwise or counterclockwise)
+        CGFloat swap = cropTargetPoint.x;
+        if (clockwise) {
+            cropTargetPoint.x = self.scrollView.contentSize.width - cropTargetPoint.y;
+            cropTargetPoint.y = swap;
+        } else {
+            cropTargetPoint.x = cropTargetPoint.y;
+            cropTargetPoint.y = self.scrollView.contentSize.height - swap;
+        }
     }
     
     //reapply the translated scroll offset to the scroll view

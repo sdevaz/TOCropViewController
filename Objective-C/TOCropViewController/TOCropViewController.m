@@ -38,6 +38,9 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 /* The cropping style of the crop view */
 @property (nonatomic, assign, readwrite) TOCropViewCroppingStyle croppingStyle;
 
+/* The rotation style of the crop view */
+@property (nonatomic, assign, readwrite) TOCropViewRotationStyle rotationStyle;
+
 /* Views */
 @property (nonatomic, strong) TOCropToolbar *toolbar;
 @property (nonatomic, strong, readwrite) TOCropView *cropView;
@@ -81,11 +84,18 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
 {
     NSParameterAssert(image);
 
+    return [self initWithCroppingStyle:style rotationStyle:TOCropViewRotationStyleRelative image:image];
+}
+
+-(instancetype)initWithCroppingStyle:(TOCropViewCroppingStyle)cropStyle rotationStyle:(TOCropViewRotationStyle)rotationStyle image:(UIImage *)image {
+    NSParameterAssert(image);
+    
     self = [super init];
     if (self) {
         // Init parameters
         _image = image;
-        _croppingStyle = style;
+        _croppingStyle = cropStyle;
+        _rotationStyle = rotationStyle;
         
         // Set up base view controller behaviour
         self.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
@@ -95,12 +105,12 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
         
         // Controller object that handles the transition animation when presenting / dismissing this app
         _transitionController = [[TOCropViewControllerTransitioning alloc] init];
-
+        
         // Default initial behaviour
         _aspectRatioPreset = TOCropViewControllerAspectRatioPresetOriginal;
         _toolbarPosition = TOCropViewControllerToolbarPositionBottom;
     }
-	
+    
     return self;
 }
 
@@ -1073,7 +1083,7 @@ static const CGFloat kTOCropViewControllerToolbarHeight = 44.0f;
     // Lazily create the crop view in case we try and access it before presentation, but
     // don't add it until our parent view controller view has loaded at the right time
     if (!_cropView) {
-        _cropView = [[TOCropView alloc] initWithCroppingStyle:self.croppingStyle image:self.image];
+        _cropView = [[TOCropView alloc] initWithCroppingStyle:self.croppingStyle rotationStyle:self.rotationStyle image:self.image];
         _cropView.delegate = self;
         _cropView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self.view addSubview:_cropView];
